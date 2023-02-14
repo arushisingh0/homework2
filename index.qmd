@@ -109,8 +109,12 @@ Plot histograms of all the quantitative variables in a **single plot**
     its documentation using the help console in R
 
 ```{R}
-
-
+df %>%
+  keep(is.numeric) %>%
+  gather() %>%
+  ggplot(aes(value)) + 
+  facet_wrap(~key, scales = "free") + 
+  geom_histogram()
 ```
 
 ------------------------------------------------------------------------
@@ -221,7 +225,17 @@ Implement the following in a **single command**:
     `avg_weight` value.
 
 ```{R}
-df %>% ... # Insert your code here
+df %>% 
+  df$num_rings <- c(
+  if (rings < 10){
+    num_rings = "low"
+  }
+  else if (rings > 20){
+    num_rings = "high"
+  }
+  else{
+    num_rings = "med"
+  })
 ```
 
 ------------------------------------------------------------------------
@@ -275,9 +289,10 @@ Perform a simple linear regression with `diameter` as the covariate and
 significance values.
 
 ```{R}
-... # Insert your code here
+model <- lm(df$height~df$diameter)
+model
 ```
-
+When $diameter$ increased by $1$, $height$ will increase by $0.351376$. The intercept indicates that whehn diameter is zero, height will be -0.003803. In this context, the intercept is not relevant since it is not possible for there to be zero diameter. 
 ------------------------------------------------------------------------
 
 ###### 3.2 (10 points)
@@ -288,7 +303,7 @@ this. Is the linear model an appropriate fit for this relationship?
 Explain.
 
 ```{R}
-... # Insert your code here
+plot(df$diameter, df$height) + abline(model, color = "red") #FIX
 ```
 
 ------------------------------------------------------------------------
